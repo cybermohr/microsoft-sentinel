@@ -12,10 +12,10 @@
             "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/284caa7f-4d22-4e1a-94fc-298766428f38')]",
             "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
             "kind": "Scheduled",
-            "apiVersion": "2021-09-01-preview",
+            "apiVersion": "2021-10-01-preview",
             "properties": {
                 "displayName": "prod-Break Glass Login Demo",
-                "description": "",
+                "description": "Anytime the Break Glass account logs into Azure. Alert! Alert! Alert!",
                 "severity": "High",
                 "enabled": true,
                 "query": "let watchlist = (_GetWatchlist('VIPUsers') | project SearchKey);\nSigninLogs\n    | where TimeGenerated >= ago(24h)\n    | where UserPrincipalName in (watchlist)\n    | where AuthenticationDetails startswith \"[]\"\n",
