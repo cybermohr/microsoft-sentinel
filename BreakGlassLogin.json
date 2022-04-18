@@ -14,7 +14,7 @@
             "kind": "Scheduled",
             "apiVersion": "2021-09-01-preview",
             "properties": {
-                "displayName": "Break Glass Login Demo",
+                "displayName": "prod-Break Glass Login Demo",
                 "description": "",
                 "severity": "High",
                 "enabled": true,
