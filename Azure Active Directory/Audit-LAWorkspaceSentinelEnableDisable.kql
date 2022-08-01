@@ -1,0 +1,10 @@
+//Detects if Microsoft Sentinel has been enabled or disabled on a Log Analytics Workspace.
+AzureActivity
+| where OperationNameValue in ("MICROSOFT.SECURITYINSIGHTS/ONBOARDINGSTATES/WRITE", "MICROSOFT.SECURITYINSIGHTS/ONBOARDINGSTATES/DELETE")
+| where ActivityStatusValue == "Success"
+| where _ResourceId has "workspaces"
+| extend Activity = case(OperationNameValue == "MICROSOFT.SECURITYINSIGHTS/ONBOARDINGSTATES/WRITE", strcat("Log Analytic Workspace Security Insights Added"), OperationNameValue == "MICROSOFT.SECURITYINSIGHTS/ONBOARDINGSTATES/DELETE", strcat("Log Analytic Workspace Security Insights Removed"), "unknown")
+| extend ResourceGroup = tostring(parse_json(Properties).resourceGroup)
+| extend x = tostring(parse_json(Properties).resource)
+| parse x with ResourceName "/" *
+| project TimeGenerated, OperationNameValue, Activity, ResourceGroup, ResourceName, Caller, CallerIpAddress

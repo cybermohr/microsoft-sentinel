@@ -1,0 +1,8 @@
+//Detects if the Break Glass Account(s) have been used for Sign-in.
+//Break Glass Accounts should be highly protected in only used incase of emergency lockout from tenant.
+//This query is based on a Watchlist that is using the VIPUsers template schema.
+let watchlist = (_GetWatchlist('BreakGlassAccounts') | project SearchKey);
+SigninLogs
+    | where TimeGenerated >= ago(24h)
+    | where UserPrincipalName in (watchlist)
+    | where AuthenticationDetails startswith "[]"
